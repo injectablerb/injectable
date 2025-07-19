@@ -11,6 +11,10 @@ AllCops:
   SuggestExtensions: false
   TargetRubyVersion: 3.4
 
+Layout/IndentationWidth:
+  Enabled: true
+  Width: 2
+
 Layout/SpaceInsideHashLiteralBraces:
   Enabled: true
   EnforcedStyle: space
