@@ -148,12 +148,6 @@ RSpec/DescribedClass:
   Exclude:
     - 'spec/injectable/dependencies_proxy_spec.rb'
 
-# Offense count: 4
-# This cop supports safe autocorrection (--autocorrect).
-RSpec/EmptyLineAfterFinalLet:
-  Exclude:
-    - 'spec/injectable/dependency_spec.rb'
-
 # Offense count: 5
 # Configuration parameters: CountAsOne.
 RSpec/ExampleLength:

@@ -56,6 +56,7 @@ describe Injectable::Dependency, 'instance' do
 
   context 'when it receives the class: option' do
     let(:options) { { 'class': Namespaced::Dep } }
+
     before do
       module Namespaced
         class Dep
