@@ -235,9 +235,3 @@ Style/FrozenStringLiteralComment:
 Style/HashSyntax:
   Exclude:
     - 'Rakefile'
-
-# Offense count: 1
-# This cop supports safe autocorrection (--autocorrect).
-Style/IfUnlessModifier:
-  Exclude:
-    - 'lib/injectable/dependency.rb'

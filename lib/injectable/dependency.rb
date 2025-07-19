@@ -35,9 +35,7 @@ module Injectable
     def wrap_call(the_instance)
       return the_instance unless call
 
-      if the_instance.respond_to? :call
-        raise Injectable::MethodAlreadyExistsException
-      end
+      raise(Injectable::MethodAlreadyExistsException) if the_instance.respond_to?(:call)
 
       the_instance.public_method(call)
     end
