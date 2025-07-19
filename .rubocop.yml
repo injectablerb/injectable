@@ -15,6 +15,11 @@ Lint/SymbolConversion:
   Enabled: true
   EnforcedStyle: strict
 
+RSpec/DescribedClass:
+  Enabled: true
+  EnforcedStyle: described_class
+  SkipBlocks: true
+
 Style/FrozenStringLiteralComment:
   Enabled: true
   EnforcedStyle: never
