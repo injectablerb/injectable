@@ -1,5 +1,10 @@
+plugins:
+  - rubocop-rspec
+
 AllCops:
   DisplayCopNames: true
   DisplayStyleGuide: true
+  Enabled: true
+  NewCops: enable
+  SuggestExtensions: false
   TargetRubyVersion: 3.4
-  Enabled: false
