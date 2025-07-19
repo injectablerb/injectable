@@ -64,15 +64,6 @@ Layout/IndentationWidth:
   Exclude:
     - 'spec/injectable_spec.rb'
 
-# Offense count: 26
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: EnforcedStyle, EnforcedStyleForEmptyBraces.
-# SupportedStyles: space, no_space, compact
-# SupportedStylesForEmptyBraces: space, no_space
-Layout/SpaceInsideHashLiteralBraces:
-  Exclude:
-    - 'spec/injectable_spec.rb'
-
 # Offense count: 4
 # Configuration parameters: AllowedMethods.
 # AllowedMethods: enums

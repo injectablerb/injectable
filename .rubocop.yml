@@ -11,6 +11,11 @@ AllCops:
   SuggestExtensions: false
   TargetRubyVersion: 3.4
 
+Layout/SpaceInsideHashLiteralBraces:
+  Enabled: true
+  EnforcedStyle: space
+  EnforcedStyleForEmptyBraces: no_space
+
 Lint/SymbolConversion:
   Enabled: true
   EnforcedStyle: strict

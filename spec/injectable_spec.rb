@@ -167,8 +167,8 @@ describe Injectable do
           include Injectable
 
           dependency :dep_with_many_args, with: [
-            {arg1_key: 'arg1_value'},
-            {arg2_key: 'arg2_value'},
+            { arg1_key: 'arg1_value' },
+            { arg2_key: 'arg2_value' },
             arg3: 'arg3_value',
             arg4: 'arg4_value'
           ]
@@ -181,8 +181,8 @@ describe Injectable do
 
       it 'keeps arguments separate' do
         expect(subject.call).to eq [
-          {arg1_key: 'arg1_value'},
-          {arg2_key: 'arg2_value'},
+          { arg1_key: 'arg1_value' },
+          { arg2_key: 'arg2_value' },
           'arg3_value',
           'arg4_value'
         ]
@@ -195,7 +195,7 @@ describe Injectable do
           include Injectable
 
           dependency :dep_with_many_args, with: [
-            {arg1_key: 'arg1_value'},
+            { arg1_key: 'arg1_value' },
             arg3: 'arg3_value',
             arg4: 'arg4_value'
           ]
@@ -208,7 +208,7 @@ describe Injectable do
 
       it 'associates correctly kwargs' do
         expect(subject.call).to eq [
-          {arg1_key: 'arg1_value'},
+          { arg1_key: 'arg1_value' },
           nil,
           'arg3_value',
           'arg4_value'
@@ -222,8 +222,8 @@ describe Injectable do
           include Injectable
 
           dependency :dep_with_many_args, with: [
-            {arg1_key: 'arg1_value'},
-            {'arg2_key' => 'arg2_value'}
+            { arg1_key: 'arg1_value' },
+            { 'arg2_key' => 'arg2_value' }
           ]
 
           def call
@@ -234,8 +234,8 @@ describe Injectable do
 
       it 'keeps positional args as is' do
         expect(subject.call).to eq [
-          {arg1_key: 'arg1_value'},
-          {'arg2_key' => 'arg2_value'},
+          { arg1_key: 'arg1_value' },
+          { 'arg2_key' => 'arg2_value' },
           nil,
           nil
         ]
@@ -248,8 +248,8 @@ describe Injectable do
           include Injectable
 
           dependency :dep_with_many_args, with: [
-            {arg1_key: 'arg1_value'},
-            {arg3: 'arg3_value'}
+            { arg1_key: 'arg1_value' },
+            { arg3: 'arg3_value' }
           ]
 
           def call
@@ -260,7 +260,7 @@ describe Injectable do
 
       it 'splats last positional arg as kwargs hash' do
         expect(subject.call).to eq [
-          {arg1_key: 'arg1_value'},
+          { arg1_key: 'arg1_value' },
           nil,
           'arg3_value',
           nil
