@@ -268,7 +268,6 @@ describe Injectable do
       end
     end
 
-
     context 'when everything is skipped' do
       subject do
         Class.new do
