@@ -11,6 +11,10 @@ AllCops:
   SuggestExtensions: false
   TargetRubyVersion: 3.4
 
+Style/QuotedSymbols:
+  Enabled: true
+  EnforcedStyle: single_quotes
+
 Style/StringLiterals:
   Enabled: true
   EnforcedStyle: single_quotes

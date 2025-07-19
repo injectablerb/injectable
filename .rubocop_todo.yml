@@ -241,10 +241,3 @@ Style/HashSyntax:
 Style/IfUnlessModifier:
   Exclude:
     - 'lib/injectable/dependency.rb'
-
-# Offense count: 1
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: .
-# SupportedStyles: same_as_string_literals, single_quotes, double_quotes
-Style/QuotedSymbols:
-  EnforcedStyle: double_quotes
