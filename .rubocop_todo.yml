@@ -119,12 +119,6 @@ Naming/VariableNumber:
   Exclude:
     - 'lib/injectable/dependency.rb'
 
-# Offense count: 1
-# This cop supports safe autocorrection (--autocorrect).
-RSpec/ContextMethod:
-  Exclude:
-    - 'spec/injectable/dependencies_graph_spec.rb'
-
 # Offense count: 5
 # Offense count: 4
 # Configuration parameters: Prefixes, AllowedPatterns.

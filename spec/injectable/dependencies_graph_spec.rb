@@ -3,9 +3,7 @@ describe Injectable::DependenciesGraph, '#resolve' do
   let(:graph) { described_class.new(namespace: ns) }
 
   context 'when depending on a dependency not declared' do
-    subject do
-      graph.add(name: :something, depends_on: %i[missing none])
-    end
+    subject { graph.add(name: :something, depends_on: %i[missing none]) }
 
     it 'raises an exception' do
       message = 'missing dependencies: missing, none'
@@ -13,7 +11,7 @@ describe Injectable::DependenciesGraph, '#resolve' do
     end
   end
 
-  context '#proxy' do
+  describe '#proxy' do
     subject { graph.proxy }
 
     let(:proxy_class) { double('Proxy class') }
