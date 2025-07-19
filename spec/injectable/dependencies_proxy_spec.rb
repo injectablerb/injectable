@@ -1,4 +1,6 @@
 describe Injectable::DependenciesProxy, '#get' do
+  subject { graph.get(target) }
+
   let(:graph) do
     Injectable::DependenciesProxy.new(
       namespace: ns,
@@ -17,8 +19,6 @@ describe Injectable::DependenciesProxy, '#get' do
   before do
     allow(dependency).to receive(:instance).with(args: [], namespace: ns).and_return(dependency_instance)
   end
-
-  subject { graph.get(target) }
 
   it 'memoizes instances' do
     expect(graph.get(:dependency)).to eq graph.get(:dependency)
