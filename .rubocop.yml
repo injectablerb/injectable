@@ -11,6 +11,9 @@ AllCops:
   SuggestExtensions: false
   TargetRubyVersion: 3.4
 
+Layout/EmptyLinesAroundAttributeAccessor:
+  Enabled: true
+  AllowAliasSyntax: true
 
 Layout/IndentationConsistency:
   Enabled: true

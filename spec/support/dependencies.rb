@@ -1,5 +1,6 @@
 DepWithNormalArg = Class.new do
   attr_reader :somearg
+
   def initialize(somearg)
     @somearg = somearg
   end
@@ -7,6 +8,7 @@ end
 
 DepWithKwargs = Class.new do
   attr_reader :somearg
+
   def initialize(somearg:)
     @somearg = somearg
   end
@@ -14,6 +16,7 @@ end
 
 DepWithBothArgs = Class.new do
   attr_reader :somearg, :options
+
   def initialize(somearg, **options)
     @options = options
     @somearg = somearg
