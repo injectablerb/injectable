@@ -11,6 +11,10 @@ AllCops:
   SuggestExtensions: false
   TargetRubyVersion: 3.4
 
+Lint/SymbolConversion:
+  Enabled: true
+  EnforcedStyle: strict
+
 Style/FrozenStringLiteralComment:
   Enabled: true
   EnforcedStyle: never
