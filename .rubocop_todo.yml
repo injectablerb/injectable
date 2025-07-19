@@ -29,12 +29,6 @@ Layout/BlockAlignment:
   Exclude:
     - 'spec/injectable_spec.rb'
 
-# Offense count: 3
-# This cop supports safe autocorrection (--autocorrect).
-Layout/EmptyLineAfterGuardClause:
-  Exclude:
-    - 'lib/injectable/instance_methods.rb'
-
 # Offense count: 4
 # Configuration parameters: AllowedMethods.
 # AllowedMethods: enums
