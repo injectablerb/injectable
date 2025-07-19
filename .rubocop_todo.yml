@@ -15,14 +15,6 @@ Gemspec/DevelopmentDependencies:
     - 'injectable.gemspec'
 
 # Offense count: 1
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: Severity, Include.
-# Include: **/*.gemspec
-Gemspec/RequireMFA:
-  Exclude:
-    - 'injectable.gemspec'
-
-# Offense count: 1
 # Configuration parameters: Severity, Include.
 # Include: **/*.gemspec
 Gemspec/RequiredRubyVersion:
@@ -134,11 +126,11 @@ RSpec/ContextMethod:
     - 'spec/injectable/dependencies_graph_spec.rb'
 
 # Offense count: 5
+# Offense count: 4
 # Configuration parameters: Prefixes, AllowedPatterns.
 # Prefixes: when, with, without
 RSpec/ContextWording:
   Exclude:
-    - 'spec/injectable/dependencies_graph_spec.rb'
     - 'spec/injectable/dependencies_proxy_spec.rb'
     - 'spec/injectable/dependency_spec.rb'
     - 'spec/injectable_spec.rb'
