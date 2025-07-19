@@ -2,7 +2,7 @@ describe Injectable::DependenciesProxy, '#get' do
   subject { graph.get(target) }
 
   let(:graph) do
-    Injectable::DependenciesProxy.new(
+    described_class.new(
       namespace: ns,
       graph: {
         dependency: dependency,
