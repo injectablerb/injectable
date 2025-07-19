@@ -10,3 +10,7 @@ AllCops:
   NewCops: enable
   SuggestExtensions: false
   TargetRubyVersion: 3.4
+
+Style/StringLiterals:
+  Enabled: true
+  EnforcedStyle: single_quotes
