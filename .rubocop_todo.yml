@@ -21,14 +21,6 @@ Gemspec/RequiredRubyVersion:
   Exclude:
     - 'injectable.gemspec'
 
-# Offense count: 1
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: EnforcedStyleAlignWith.
-# SupportedStylesAlignWith: either, start_of_block, start_of_line
-Layout/BlockAlignment:
-  Exclude:
-    - 'spec/injectable_spec.rb'
-
 # Offense count: 4
 # Configuration parameters: AllowedMethods.
 # AllowedMethods: enums
