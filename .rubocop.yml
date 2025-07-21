@@ -1,5 +1,57 @@
+inherit_from: .rubocop_todo.yml
+
+plugins:
+  - rubocop-rspec
+
 AllCops:
   DisplayCopNames: true
   DisplayStyleGuide: true
-  TargetRubyVersion: 2.7.6
-  Enabled: false
+  Enabled: true
+  NewCops: enable
+  SuggestExtensions: false
+  TargetRubyVersion: 3.4
+
+Layout/EmptyLinesAroundAttributeAccessor:
+  Enabled: true
+  AllowAliasSyntax: true
+
+Layout/IndentationConsistency:
+  Enabled: true
+  EnforcedStyle: normal
+
+Layout/IndentationWidth:
+  Enabled: true
+  Width: 2
+
+Layout/SpaceInsideHashLiteralBraces:
+  Enabled: true
+  EnforcedStyle: space
+  EnforcedStyleForEmptyBraces: no_space
+
+Lint/SymbolConversion:
+  Enabled: true
+  EnforcedStyle: strict
+
+RSpec/DescribedClass:
+  Enabled: true
+  EnforcedStyle: described_class
+  SkipBlocks: true
+
+Style/FrozenStringLiteralComment:
+  Enabled: true
+  EnforcedStyle: never
+
+Style/HashSyntax:
+  Enabled: true
+  EnforcedStyle: ruby19_no_mixed_keys
+  EnforcedShorthandSyntax: either_consistent
+  UseHashRocketsWithSymbolValues: false
+  PreferHashRocketsForNonAlnumEndingSymbols: false
+
+Style/QuotedSymbols:
+  Enabled: true
+  EnforcedStyle: single_quotes
+
+Style/StringLiterals:
+  Enabled: true
+  EnforcedStyle: single_quotes

@@ -1,8 +1,9 @@
 describe Injectable::Dependency, 'instance' do
+  subject { described_instance.instance }
+
   let(:name) { 'my_dependency' }
   let(:options) { { name: name } }
   let(:described_instance) { described_class.new(options) }
-  subject { described_instance.instance }
 
   before do
     class MyDependency
@@ -20,6 +21,8 @@ describe Injectable::Dependency, 'instance' do
   end
 
   describe 'with arguments' do
+    subject { described_instance.instance(args: ['some arg']).arg }
+
     let(:klass) do
       Class.new do
         attr_reader :arg
@@ -30,12 +33,13 @@ describe Injectable::Dependency, 'instance' do
       end
     end
     let(:options) { { class: klass } }
-    subject { described_instance.instance(args: ['some arg']).arg }
 
     it { is_expected.to eq 'some arg' }
   end
 
   describe 'with keyword arguments' do
+    subject { described_instance.instance(args: { kwarg: 'some arg' }).kwarg }
+
     let(:klass) do
       Class.new do
         attr_reader :kwarg
@@ -46,13 +50,13 @@ describe Injectable::Dependency, 'instance' do
       end
     end
     let(:options) { { class: klass } }
-    subject { described_instance.instance(args: { kwarg: 'some arg' }).kwarg }
 
     it { is_expected.to eq 'some arg' }
   end
 
   context 'when it receives the class: option' do
-    let(:options) { { "class": Namespaced::Dep } }
+    let(:options) { { class: Namespaced::Dep } }
+
     before do
       module Namespaced
         class Dep
@@ -94,6 +98,8 @@ describe Injectable::Dependency, 'instance' do
   end
 
   context 'within a namespace' do
+    subject { described_instance.instance(namespace: Namespace) }
+
     let(:name) { :nested }
 
     before do
@@ -102,8 +108,6 @@ describe Injectable::Dependency, 'instance' do
         end
       end
     end
-
-    subject { described_instance.instance(namespace: Namespace) }
 
     it { is_expected.to be_a Namespace::Nested }
   end

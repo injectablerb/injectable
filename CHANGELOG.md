@@ -1,5 +1,15 @@
 # Unreleased
 
+## 2.1.3 - 2025-07-21
+
+* Drop support for Rubies below 3.2
+* Add support for Rubies up to 3.4.5
+* Updates Github Actions versions for checkout and Ruby setup
+* Enables requirement of MFA in Rubygems
+* Sets up Rubocop Github Action
+* Sets up Rubocop todo and config
+* Fixes several Rubocop flaggings
+
 ## 2.1.2 - 2023-03-31
 
 * Drop support for Ruby 2.7
