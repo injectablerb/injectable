@@ -1,6 +1,6 @@
 # Injectable
 
-![Rspec](https://github.com/rubiconmd/injectable/workflows/RSpec/badge.svg)![Rubocop](https://github.com/rubiconmd/injectable/workflows/rubocop/badge.svg)
+![RSpec](https://github.com/rubiconmd/injectable/workflows/RSpec/badge.svg)![Rubocop](https://github.com/rubiconmd/injectable/workflows/rubocop/badge.svg)
 
 `Injectable` is an opinionated and declarative [Dependency Injection](https://en.wikipedia.org/wiki/Dependency_injection) library for ruby.
 
