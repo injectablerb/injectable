@@ -120,6 +120,8 @@ module Injectable
     # ```
     #
     # Every argument is required unless given an optional default value
+    # Option :type can be provided to enforce runtime type checking when the
+    # service is called. Example: `argument :user, type: User`.
     # @param name Name of the argument
     # @option options :default The default value of the argument
     # @example
@@ -131,8 +133,10 @@ module Injectable
     #   argument :team_id, default: 1
     #     # => def call(team_id: 1)
     #     # =>   @team_id = team_id
-    #     # => end
+    #     # => end)
     def argument(name, options = {})
+      Injectable::Validators::ArgumentDeclaration.validate!(name, options[:type], options[:default])
+
       call_arguments[name] = options
       attr_accessor name
     end

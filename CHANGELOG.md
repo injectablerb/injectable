@@ -1,5 +1,9 @@
 # Unreleased
 
+## 2.2.0 - 2025-11-12
+
+* `argument` can now optionally take a `type` option, which will be checked against the provided value when calling the object.
+
 ## 2.1.6 - 2026-01-12
 
 * adds Ruby 4 to the support matrix

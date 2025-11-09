@@ -427,6 +427,65 @@ describe Injectable do
         'missing keywords: user_id'
       )
     end
+
+    describe 'argument type checking' do
+      before do
+        class DummyUser; end # rubocop:disable Lint/EmptyClass
+
+        class TypedService
+          include Injectable
+
+          argument :user, type: DummyUser, default: nil
+
+          def call
+            user
+          end
+        end
+
+        class StrictService
+          include Injectable
+
+          argument :values, type: Array
+          def call
+            values.to_s
+          end
+        end
+      end
+
+      let(:bad_service) do
+        class BadDefaultService
+          include Injectable
+
+          argument :report, type: Hash, default: []
+
+          def call
+            report
+          end
+        end
+      end
+
+      it 'allows default nil when type is declared' do
+        expect { TypedService.call }.not_to raise_error
+      end
+
+      it 'sets the value all right' do
+        expect(TypedService.call(user: nil).instance_variable_get('@user')).to be_nil
+      end
+
+      it 'allows explicit nil when default nil provided and type declared' do
+        expect { TypedService.call(user: nil) }.not_to raise_error
+      end
+
+      it 'raises ArgumentError when wrong type is passed' do
+        expect { StrictService.call(values: 123) }.to raise_error(RuntimeError)
+      end
+
+      it 'raises ArgumentError when a declared default does not match the type' do
+        expect do
+          bad_service
+        end.to raise_error(ArgumentError, /default for argument report is a Array, needs to be a Hash/)
+      end
+    end
   end
 
   context 'with arguments with default values' do
