@@ -15,7 +15,11 @@ module Injectable
       check_call_definition!
       check_missing_arguments!(self.class.required_call_arguments, args)
       variables_for!(self.class.call_arguments, args)
-      super()
+      result = super()
+
+      Injectable::Validators::Returns.validate!(self.class.return_spec, result)
+
+      result
     end
 
     private

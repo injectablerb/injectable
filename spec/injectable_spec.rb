@@ -647,4 +647,141 @@ describe Injectable do
       expect(subject.call).to eq "can't block this"
     end
   end
+
+  describe 'return type checking' do
+    before do
+      class ReturnUser; end # rubocop:disable Lint/EmptyClass
+
+      class ReturnsUserService
+        include Injectable
+
+        returns ReturnUser, nullable: false
+
+        def call
+          ReturnUser.new
+        end
+      end
+
+      class ReturnsNilAllowedService
+        include Injectable
+
+        returns ReturnUser, nullable: true
+
+        def call
+          nil
+        end
+      end
+
+      class ReturnsNilNotAllowedService
+        include Injectable
+
+        returns ReturnUser, nullable: false
+
+        def call
+          nil
+        end
+      end
+
+      class ReturnsWrongTypeService
+        include Injectable
+
+        returns ReturnUser, nullable: false
+
+        def call
+          123
+        end
+      end
+    end
+
+    it 'allows correct return type' do
+      svc = ReturnsUserService.new
+      expect { svc.call }.not_to raise_error
+    end
+
+    it 'allows nil when allow_nil is true' do
+      svc = ReturnsNilAllowedService.new
+      expect { svc.call }.not_to raise_error
+    end
+
+    it 'raises when nil and nullable is false' do
+      svc = ReturnsNilNotAllowedService.new
+      expect { svc.call }.to raise_error(RuntimeError, /return value is nil, expected ReturnUser/)
+    end
+
+    it 'raises when wrong return type' do
+      expect do
+        ReturnsWrongTypeService.call
+      end.to raise_error(RuntimeError, /return value is a Integer, needs to be a ReturnUser/)
+    end
+
+    context 'with collection returns' do
+      before do
+        class ReturnsArrayClass
+          include Injectable
+
+          returns Array, of: ReturnUser, nullable: false, allow_nils: false
+
+          def call
+            [ReturnUser.new, ReturnUser.new]
+          end
+        end
+
+        class ReturnsArrayWithNilsClass
+          include Injectable
+
+          returns Array, of: ReturnUser, nullable: false, allow_nils: true
+
+          def call
+            [ReturnUser.new, nil, ReturnUser.new]
+          end
+        end
+
+        class ReturnsWrongTypes
+          include Injectable
+
+          returns Array, of: ReturnUser, nullable: false, allow_nils: false
+
+          def call
+            [ReturnUser.new, 123]
+          end
+        end
+
+        class MyCollection
+          include Enumerable
+
+          def each
+            yield 1, 2
+          end
+        end
+
+        class ReturnsMyCollection
+          include Injectable
+
+          returns MyCollection, of: Integer, nullable: false, allow_nils: false
+
+          def call
+            MyCollection.new
+          end
+        end
+      end
+
+      it 'accepts array of declared type' do
+        expect { ReturnsArrayClass.call }.not_to raise_error
+      end
+
+      it 'accepts nil values if specified' do
+        expect { ReturnsArrayWithNilsClass.call }.not_to raise_error
+      end
+
+      it 'raises when collection contains wrong types' do
+        expect do
+          ReturnsWrongTypes.call
+        end.to raise_error(RuntimeError, /return collection contains a Integer, needs elements of/)
+      end
+
+      it 'accepts any Enumerable (ActiveRecord-like) collection' do
+        expect { ReturnsMyCollection.call }.not_to raise_error
+      end
+    end
+  end
 end
