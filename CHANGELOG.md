@@ -3,6 +3,7 @@
 ## 3.1.0 - 2025-11-12
 
 * `argument` can now optionally take a `type` option, which will be checked against the provided value when calling the object.
+* adds optional `returns` statement to typecheck the returned type of the object
 
 ## 3.0.0 - 2026-04-25
 
