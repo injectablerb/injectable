@@ -332,6 +332,38 @@ argument :browser, default: 'Unknown'
 
 If you don't pass the `:default` option the argument will be required.
 
+### Type checking for arguments
+
+You can optionally declare a `:type` for an argument to enable runtime type
+validation. Examples:
+
+```rb
+argument :user,   type: User
+argument :values, type: Array
+argument :report, type: Hash
+```
+
+Rules:
+
+- `:type` is optional — if omitted, no type checking is performed.
+- If `:type` is provided and you also provide a `:default`, the default must
+  be either `nil` or an instance of the declared type. Otherwise an
+  ArgumentError is raised at declaration time.
+- At runtime, when `#call` is invoked, any non-nil argument value passed will
+  be validated against the declared type. If the value is not an instance of
+  the declared type, an ArgumentError is raised with a helpful message.
+
+Example error message:
+
+```text
+ArgumentError: argument user passed is a Integer, needs to be a User
+```
+
+Notes:
+
+- Passing `nil` is allowed when the default is `nil` or when you explicitly
+  pass `nil` at call time. If you'd like stricter behavior (for example,
+  forbidding nil), we can add an `allow_nil: false` option in a follow-up.
 
 ## Development
 
@@ -339,11 +371,11 @@ After checking out the repo, run `bin/setup` to install dependencies. Then, run 
 
 To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
 
-Please consider configuring [https://editorconfig.org/] on your favourite IDE/editor, so basic file formatting is consistent and avoids cross-platform issues. Some editors require [a plugin](https://editorconfig.org/#download), meanwhile others have it [pre-installed](https://editorconfig.org/#pre-installed).
+Please consider configuring [EditorConfig](https://editorconfig.org/) on your favourite IDE/editor, so basic file formatting is consistent and avoids cross-platform issues. Some editors require [a plugin](https://editorconfig.org/#download), meanwhile others have it [pre-installed](https://editorconfig.org/#pre-installed).
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/rubiconmd/injectable. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at [rubiconmd/injectable](https://github.com/rubiconmd/injectable). This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 ## License
 
