@@ -365,7 +365,140 @@ Notes:
   pass `nil` at call time. If you'd like stricter behavior (for example,
   forbidding nil), we can add an `allow_nil: false` option in a follow-up.
 
+## Return type checking
+
+You can declare the expected return type of a service with the `returns`
+macro. This enables runtime validation of the value returned by `#call`.
+
+Example:
+
+```ruby
+class FindUser
+  include Injectable
+
+  argument :id
+  returns User, nullable: false
+
+  def call
+    user_query.call(id)
+  end
+end
+```
+
+Behavior:
+
+- If `nullable: false` and the service returns `nil`, an ArgumentError is raised.
+- If the service returns a non-nil value that is not an instance of the declared
+  type, an ArgumentError is raised.
+- If `nullable: true`, `nil` is accepted as a valid return value.
+
+Example error messages:
+
+```text
+ArgumentError: return value is nil, expected User
+ArgumentError: return value is a Integer, needs to be a User
+```
+
+Examples
+
+Single return type
+
+```ruby
+class FindUser
+  include Injectable
+
+  argument :id
+  returns User, nullable: false
+
+  def call
+    user_query.call(id)
+  end
+end
+
+FindUser.call(id: 1)
+```
+
+Array (collection) return type
+
+```ruby
+class ListUserIds
+  include Injectable
+
+  returns Array, of: Integer, nullable: false, allow_nils: false
+
+  def call
+    User.pluck(:id) # returns an Array of Integer
+  end
+end
+
+ListUserIds.call
+```
+
+ActiveRecord/Relation-like collection
+
+```ruby
+class AllUsers
+  include Injectable
+
+  returns Enumerable, of: User, nullable: false, allow_nils: false
+
+  def call
+    User.where(active: true) # returns an ActiveRecord::Relation of User
+  end
+end
+
+AllUsers.call
+```
+
 ## Development
+
+Advanced return examples
+
+```ruby
+# Nullable single return (allowed nil)
+class MaybeUser
+  include Injectable
+
+  returns User, nullable: true
+
+  def call
+    nil
+  end
+end
+
+MaybeUser.call # => nil is allowed
+```
+
+```ruby
+# Collection with nil elements allowed
+class UsersWithPossibleNils
+  include Injectable
+
+  returns Array, of: User, nullable: false, allow_nils: true
+
+  def call
+    [User.new, nil, User.new]
+  end
+end
+
+UsersWithPossibleNils.call # => allowed because allow_nils: true
+```
+
+```ruby
+# Collection with nil elements NOT allowed (will raise)
+class UsersNoNils
+  include Injectable
+
+  returns Array, of: User, nullable: false, allow_nils: false
+
+  def call
+    [User.new, nil]
+  end
+end
+
+# Runtime error raised when calling:
+# ArgumentError: collection contains nil but allow_nils is false
+```
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
 
