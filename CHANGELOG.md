@@ -1,6 +1,10 @@
 # Unreleased
 
-## 2.1.5 - 2025-11-12
+## 2.2.0 - 2025-11-12
+
+* `argument` can now optionally take a `type` option, which will be checked against the provided value when calling the object.
+
+## 2.1.5 - 2025-11-12
 
 * adds simplecov
 
