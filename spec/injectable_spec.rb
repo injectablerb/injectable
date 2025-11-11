@@ -297,6 +297,7 @@ describe Injectable do
       Class.new do
         include Injectable
         extend Forwardable
+
         dependency :some_renderer, call: :render
 
         def call
@@ -315,6 +316,7 @@ describe Injectable do
       Class.new do
         include Injectable
         extend Forwardable
+
         dependency :some_callable_renderer, call: :render
 
         def call
@@ -332,6 +334,7 @@ describe Injectable do
     subject do
       Class.new do
         include Injectable
+
         dependency(:some_constant, call: :name) { Object }
 
         def call
@@ -374,6 +377,7 @@ describe Injectable do
       Class.new do
         include Injectable
         extend Forwardable
+
         dependency :existing_class
         def_delegators :existing_class, :call
       end
@@ -389,6 +393,7 @@ describe Injectable do
       Class.new do
         include Injectable
         extend Forwardable
+
         dependency :something_else, class: WeirdName
         def_delegators :something_else, :call
       end
@@ -453,6 +458,7 @@ describe Injectable do
       Class.new do
         include Injectable
         extend Forwardable
+
         dependency :injected_class
         def_delegators :injected_class, :call
       end
@@ -467,6 +473,7 @@ describe Injectable do
     subject do
       Class.new do
         include Injectable
+
         dependency :counter
         dependency :somedep, depends_on: :counter
         dependency :anotherdep, depends_on: [:counter]

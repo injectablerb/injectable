@@ -1,5 +1,11 @@
 # Unreleased
 
+## 2.1.4 - 2025-11-09
+
+* Add support for Rubies up to 3.4.7
+* Updates test matrix
+* Updates dependencies
+
 ## 2.1.3 - 2025-07-21
 
 * Drop support for Rubies below 3.2

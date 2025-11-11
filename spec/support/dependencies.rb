@@ -150,6 +150,7 @@ class Parent
 
   include Injectable
   extend Forwardable
+
   dependency :dependency
   def_delegators :dependency, :call
 end
