@@ -29,7 +29,7 @@ describe Injectable::ClassMethods do
       expect(instance.flag).to eq('on')
     end
 
-    it 'allows to modify attribute value on the instance', skip: 'Failing, need to investigate' do
+    it 'allows to modify attribute value on the instance' do
       instance = klass.new
       instance.instance_variable_set('@flag', 'local')
       expect(instance.flag).to eq('local')

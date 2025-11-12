@@ -28,22 +28,26 @@ module Injectable
 
         ivar = "@#{name}"
 
+        # Define the instance reader immediately when this attribute is declared
+        # so instances always respond to the reader even if the singleton
+        # class value has not been set yet.
+        if singleton_class?
+          class_eval do
+            define_method(name) do
+              if instance_variable_defined? ivar
+                instance_variable_get ivar
+              else
+                singleton_class.send name
+              end
+            end
+          end
+        end
+
         define_singleton_method("#{name}=") do |val|
           singleton_class.class_eval do
             define_method(name) { val }
           end
 
-          if singleton_class?
-            class_eval do
-              define_method(name) do
-                if instance_variable_defined? ivar
-                  instance_variable_get ivar
-                else
-                  singleton_class.send name
-                end
-              end
-            end
-          end
           val
         end
       end
