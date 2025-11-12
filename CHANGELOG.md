@@ -1,5 +1,9 @@
 # Unreleased
 
+## 2.1.5 - 2025-11-12
+
+* adds simplecov
+
 ## 2.1.4 - 2025-11-09
 
 * Add support for Rubies up to 3.4.7
