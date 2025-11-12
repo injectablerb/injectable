@@ -508,7 +508,11 @@ Please consider configuring [EditorConfig](https://editorconfig.org/) on your fa
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at [rubiconmd/injectable](https://github.com/rubiconmd/injectable). This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at [injectablerb/injectable](https://github.com/injectablerb/injectable). 
+
+### Code of Conduct
+
+This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 ## License
 
