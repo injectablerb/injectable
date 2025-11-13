@@ -1,19 +1,6 @@
+require 'simplecov' if ENV['COVERAGE'] == 'true'
 require 'bundler/setup'
 require 'injectable'
-
-if ENV['COVERAGE'] == 'true'
-  require 'simplecov'
-  require 'simplecov-json'
-
-  SimpleCov.formatters = SimpleCov::Formatter::MultiFormatter.new([
-                                                                    SimpleCov::Formatter::HTMLFormatter,
-                                                                    SimpleCov::Formatter::JSONFormatter
-                                                                  ])
-
-  SimpleCov.start do
-    enable_coverage(:branch)
-  end
-end
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
