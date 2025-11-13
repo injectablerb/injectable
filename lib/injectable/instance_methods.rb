@@ -15,7 +15,11 @@ module Injectable
       check_call_definition!
       check_missing_arguments!(self.class.required_call_arguments, args)
       variables_for!(self.class.call_arguments, args)
-      super()
+      result = super()
+
+      Injectable::Validators::Returns.validate!(self.class.return_spec, result)
+
+      result
     end
 
     private
@@ -37,7 +41,11 @@ module Injectable
 
     def variables_for!(subject, args)
       subject.each do |arg, options|
-        instance_variable_set("@#{arg}", args.fetch(arg) { options[:default] })
+        value = args.fetch(arg) { options[:default] }
+
+        Injectable::Validators::ArgumentType.validate!(arg, options[:type], value)
+
+        instance_variable_set("@#{arg}", value)
       end
     end
 

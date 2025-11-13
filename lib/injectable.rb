@@ -6,6 +6,11 @@ require 'injectable/dependency'
 require 'injectable/instance_methods'
 require 'injectable/missing_dependencies_exception'
 require 'injectable/method_already_exists_exception'
+require 'injectable/validators/argument_declaration'
+require 'injectable/validators/argument_type'
+require 'injectable/validators/collection_returns'
+require 'injectable/validators/single_returns'
+require 'injectable/validators/returns'
 
 # Convert your class into an injectable service
 #
