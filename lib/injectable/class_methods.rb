@@ -195,10 +195,9 @@ module Injectable
       raise(ArgumentError, ':of for returns must be a Class or Module') unless element_class.is_a?(Module)
       raise(ArgumentError, ':collection for returns must be a Class or Module') unless collection_class.is_a?(Module)
 
-      valid_collection = collection_class.include?(Enumerable) # check method_defined?(:each) instead?
-      unless valid_collection
+      unless collection_class.instance_methods.include?(:each)
         raise(ArgumentError,
-              "#{collection_class} is not a collection-like class (must include Enumerable) when specifying :of")
+              "#{collection_class} is not a collection-like class (must respond to :each) when specifying :of")
       end
 
       { kind: :collection, collection: collection_class, elem: element_class }
