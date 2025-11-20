@@ -193,9 +193,7 @@ module Injectable
 
     def initialize_collection_return(collection_class, element_class)
       raise(ArgumentError, ':of for returns must be a Class or Module') unless element_class.is_a?(Module)
-
-      valid_collection = collection_class.is_a?(Class) || collection_class.is_a?(Module)
-      raise(ArgumentError, ':collection for returns must be a Class or Module') unless valid_collection
+      raise(ArgumentError, ':collection for returns must be a Class or Module') unless collection_class.is_a?(Module)
 
       valid_collection = collection_class.include?(Enumerable) # check method_defined?(:each) instead?
       unless valid_collection
