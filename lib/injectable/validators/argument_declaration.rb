@@ -15,7 +15,7 @@ module Injectable
           raise(ArgumentError, wrong_type_message(name)) unless type.is_a?(Module)
           return unless default
 
-          raise ArgumentError, bad_default_type(name, default.class, type) unless default.is_a?(type)
+          raise ArgumentError, bad_default_type_message(name, default.class, type) unless default.is_a?(type)
         end
 
         private
@@ -24,7 +24,7 @@ module Injectable
           ":type for argument #{name} must be a Class or Module"
         end
 
-        def bad_default_type(name, default_class, type)
+        def bad_default_type_message(name, default_class, type)
           "default for argument #{name} is a #{default_class}, needs to be a #{type}"
         end
       end
