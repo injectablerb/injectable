@@ -25,12 +25,12 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
   spec.required_ruby_version = '>= 3.2'
 
-  spec.add_development_dependency 'bundler', '~> 2.7'
+  spec.add_development_dependency 'bundler', '~> 4.0'
   spec.add_development_dependency 'pry-byebug', '~> 3.11'
   spec.add_development_dependency 'rake', '~> 13.3'
   spec.add_development_dependency 'rspec', '~> 3.13'
-  spec.add_development_dependency 'rubocop', '~> 1.81'
-  spec.add_development_dependency 'rubocop-rspec', '~> 3.7'
+  spec.add_development_dependency 'rubocop', '~> 1.82'
+  spec.add_development_dependency 'rubocop-rspec', '~> 3.9'
   spec.add_development_dependency 'simplecov', '~> 0.22'
   spec.add_development_dependency 'simplecov-json', '~> 0.2'
 end
