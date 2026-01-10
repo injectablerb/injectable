@@ -15,7 +15,7 @@ module Injectable
             Injectable::Validators::SingleReturns.validate!(*spec.values_at(:type, :nullable), result)
           when :collection
             Injectable::Validators::CollectionReturns.validate!(
-              *spec.values_at(:collection, :elem, :nullable, :allow_nils), result
+              *spec.values_at(:collection_type, :element_type, :nullable, :allow_nils), result
             )
           else
             raise("unknown return spec kind: #{kind}")
