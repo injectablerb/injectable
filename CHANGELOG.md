@@ -1,6 +1,12 @@
 # Unreleased
 
-## 2.1.5 - 2025-11-12
+## 2.2.0 - 2025-11-12
+
+* `argument` can now optionally take a `type` option, which will be checked against the provided value when calling the object.
+* adds optional `returns` statement to typecheck the returned type of the object
+* Fixes simplecov setup and adds code coverage.
+
+## 2.1.5 - 2025-11-12
 
 * adds simplecov
 

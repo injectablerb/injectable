@@ -332,18 +332,187 @@ argument :browser, default: 'Unknown'
 
 If you don't pass the `:default` option the argument will be required.
 
+### Type checking for arguments
+
+You can optionally declare a `:type` for an argument to enable runtime type
+validation. Examples:
+
+```rb
+argument :user,   type: User
+argument :values, type: Array, default: %i[done closed accepted rejected]
+argument :report, type: Hash, default: nil
+```
+
+Rules:
+
+- `:type` is optional — if omitted, no type checking is performed.
+- If `:type` is provided and you also provide a `:default`, the default must
+  be either `nil` or an instance of the declared type. Otherwise an
+  ArgumentError is raised at declaration time.
+- At runtime, when `#call` is invoked, any non-nil argument value passed will
+  be validated against the declared type. If the value is not an instance of
+  the declared type, an ArgumentError is raised with a helpful message.
+
+Example error message:
+
+```text
+ArgumentError: argument user passed is a Integer, needs to be a User
+```
+
+Notes:
+
+- Passing `nil` is allowed when the default is `nil` or when you explicitly
+  pass `nil` at call time. If you'd like stricter behavior (for example,
+  forbidding nil), we can add an `allow_nil: false` option in a follow-up.
+
+## Return type checking
+
+You can declare the expected return type of a service with the `returns`
+macro. This enables runtime validation of the value returned by `#call`.
+
+Example:
+
+```ruby
+class FindUser
+  include Injectable
+
+  argument :id
+  returns User, nullable: false
+
+  def call
+    user_query.call(id)
+  end
+end
+```
+
+Behavior:
+
+- If `nullable: false` and the service returns `nil`, an ArgumentError is raised.
+- If the service returns a non-nil value that is not an instance of the declared
+  type, an ArgumentError is raised.
+- If `nullable: true`, `nil` is accepted as a valid return value.
+
+Example error messages:
+
+```text
+ArgumentError: return value is nil, expected User
+ArgumentError: return value is a Integer, needs to be a User
+```
+
+Examples
+
+Single return type
+
+```ruby
+class FindUser
+  include Injectable
+
+  argument :id
+  returns User, nullable: false
+
+  def call
+    user_query.call(id)
+  end
+end
+
+FindUser.call(id: 1)
+```
+
+Array (collection) return type
+
+```ruby
+class ListUserIds
+  include Injectable
+
+  returns Array, of: Integer, nullable: false, allow_nils: false
+
+  def call
+    User.pluck(:id) # returns an Array of Integer
+  end
+end
+
+ListUserIds.call
+```
+
+ActiveRecord/Relation-like collection
+
+```ruby
+class AllUsers
+  include Injectable
+
+  returns Enumerable, of: User, nullable: false, allow_nils: false
+
+  def call
+    User.where(active: true) # returns an ActiveRecord::Relation of User
+  end
+end
+
+AllUsers.call
+```
 
 ## Development
+
+Advanced return examples
+
+```ruby
+# Nullable single return (allowed nil)
+class MaybeUser
+  include Injectable
+
+  returns User, nullable: true
+
+  def call
+    nil
+  end
+end
+
+MaybeUser.call # => nil is allowed
+```
+
+```ruby
+# Collection with nil elements allowed
+class UsersWithPossibleNils
+  include Injectable
+
+  returns Array, of: User, nullable: false, allow_nils: true
+
+  def call
+    [User.new, nil, User.new]
+  end
+end
+
+UsersWithPossibleNils.call # => allowed because allow_nils: true
+```
+
+```ruby
+# Collection with nil elements NOT allowed (will raise)
+class UsersNoNils
+  include Injectable
+
+  returns Array, of: User, nullable: false, allow_nils: false
+
+  def call
+    [User.new, nil]
+  end
+end
+
+# Runtime error raised when calling:
+# ArgumentError: collection contains nil but allow_nils is false
+```
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
 
 To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
 
-Please consider configuring [https://editorconfig.org/] on your favourite IDE/editor, so basic file formatting is consistent and avoids cross-platform issues. Some editors require [a plugin](https://editorconfig.org/#download), meanwhile others have it [pre-installed](https://editorconfig.org/#pre-installed).
+Please consider configuring [EditorConfig](https://editorconfig.org/) on your favourite IDE/editor, so basic file formatting is consistent and avoids cross-platform issues. Some editors require [a plugin](https://editorconfig.org/#download), meanwhile others have it [pre-installed](https://editorconfig.org/#pre-installed).
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/rubiconmd/injectable. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at [injectablerb/injectable](https://github.com/injectablerb/injectable).
+
+### Code of Conduct
+
+This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 ## License
 
