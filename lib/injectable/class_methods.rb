@@ -200,7 +200,7 @@ module Injectable
               "#{collection_class} is not a collection-like class (must respond to :each) when specifying :of")
       end
 
-      { kind: :collection, collection: collection_class, elem: element_class }
+      { kind: :collection, collection_type: collection_class, element_type: element_class }
     end
   end
 end
