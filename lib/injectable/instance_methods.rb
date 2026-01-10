@@ -22,7 +22,7 @@ module Injectable
 
     def check_call_definition!
       return if (self.class.ancestors - [Injectable::InstanceMethods]).any? do |ancestor|
-        ancestor.instance_methods(false).include?(:call)
+        ancestor.method_defined?(:call, false)
       end
 
       raise NoMethodError, "A #call method with zero arity must be defined in #{self.class}"
