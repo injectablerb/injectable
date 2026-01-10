@@ -1,6 +1,12 @@
 # Unreleased
 
-## 2.1.5 - 2025-11-12
+## 2.1.6 - 2026-01-12
+
+* adds Ruby 4 to the support matrix
+* upgrades gemspec dependencies
+* maintain and appease the authorities (Rubocop)
+
+## 2.1.5 - 2025-11-12
 
 * adds simplecov
 
