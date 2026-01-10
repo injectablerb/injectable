@@ -339,8 +339,8 @@ validation. Examples:
 
 ```rb
 argument :user,   type: User
-argument :values, type: Array
-argument :report, type: Hash
+argument :values, type: Array, default: %i[done closed accepted rejected]
+argument :report, type: Hash, default: nil
 ```
 
 Rules:
@@ -508,7 +508,7 @@ Please consider configuring [EditorConfig](https://editorconfig.org/) on your fa
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at [injectablerb/injectable](https://github.com/injectablerb/injectable). 
+Bug reports and pull requests are welcome on GitHub at [injectablerb/injectable](https://github.com/injectablerb/injectable).
 
 ### Code of Conduct
 
