@@ -9,7 +9,7 @@ AllCops:
   Enabled: true
   NewCops: enable
   SuggestExtensions: false
-  TargetRubyVersion: 3.4
+  TargetRubyVersion: 3.2
 
 Layout/EmptyLinesAroundAttributeAccessor:
   Enabled: true
