@@ -338,20 +338,17 @@ You can optionally declare a `:type` for an argument to enable runtime type
 validation. Examples:
 
 ```rb
-argument :user,   type: User
-argument :values, type: Array, default: %i[done closed accepted rejected]
 argument :report, type: Hash, default: nil
+argument :values, type: Array, default: %i[done closed accepted rejected]
+argument :author, type: [User, Admin]
 ```
 
 Rules:
 
 - `:type` is optional — if omitted, no type checking is performed.
-- If `:type` is provided and you also provide a `:default`, the default must
-  be either `nil` or an instance of the declared type. Otherwise an
-  ArgumentError is raised at declaration time.
-- At runtime, when `#call` is invoked, any non-nil argument value passed will
-  be validated against the declared type. If the value is not an instance of
-  the declared type, an ArgumentError is raised with a helpful message.
+- If `:type` is provided and you also provide a `:default`, the default must be either `nil` or an instance of the declared type. Otherwise an ArgumentError is raised at declaration time.
+- `:type` can be an array of classes, as in `[Array, Hash]`. If provided, the `:default` needs to be `nil` or an instance of any of the classes in the array.
+- At runtime, when `#call` is invoked, any non-nil argument value passed will be validated against the declared type. If the value is not an instance of the declared type, an ArgumentError is raised with a helpful message.
 
 Example error message:
 
@@ -361,14 +358,11 @@ ArgumentError: argument user passed is a Integer, needs to be a User
 
 Notes:
 
-- Passing `nil` is allowed when the default is `nil` or when you explicitly
-  pass `nil` at call time. If you'd like stricter behavior (for example,
-  forbidding nil), we can add an `allow_nil: false` option in a follow-up.
+- Passing `nil` is allowed when the default is `nil` or when you explicitly pass `nil` at call time. If you'd like stricter behavior (for example, forbidding nil), we can add an `allow_nil: false` option in a follow-up.
 
 ## Return type checking
 
-You can declare the expected return type of a service with the `returns`
-macro. This enables runtime validation of the value returned by `#call`.
+You can declare the expected return type of a service with the `returns` macro. This enables runtime validation of the value returned by `#call`.
 
 Example:
 
@@ -388,8 +382,7 @@ end
 Behavior:
 
 - If `nullable: false` and the service returns `nil`, an ArgumentError is raised.
-- If the service returns a non-nil value that is not an instance of the declared
-  type, an ArgumentError is raised.
+- If the service returns a non-nil value that is not an instance of the declared type, an ArgumentError is raised.
 - If `nullable: true`, `nil` is accepted as a valid return value.
 
 Example error messages:

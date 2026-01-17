@@ -476,7 +476,7 @@ describe Injectable do
         expect { TypedService.call(user: nil) }.not_to raise_error
       end
 
-      it 'raises ArgumentError when wrong type is passed' do
+      it 'raises RuntimeError when wrong type is passed' do
         expect { StrictService.call(values: 123) }.to raise_error(RuntimeError)
       end
 
@@ -484,6 +484,58 @@ describe Injectable do
         expect do
           bad_service
         end.to raise_error(ArgumentError, /default for argument report is a Array, needs to be a Hash/)
+      end
+
+      context 'when passing an array of allowed types' do
+        before do
+          class ArrayTypedClass
+            include Injectable
+
+            argument :mode, type: [String, Symbol], default: :auto
+
+            def call
+              mode
+            end
+          end
+        end
+
+        let(:bad_array_typed_class) do
+          class BadArrayTypedClass
+            include Injectable
+
+            argument :mode, type: [String, Symbol], default: 123
+
+            def call
+              mode
+            end
+          end
+        end
+
+        it 'accepts the declared default that matches one of the union types' do
+          expect(ArrayTypedClass.call).to eq(:auto)
+        end
+
+        it 'allows passing a value matching one value of the union types' do
+          expect(ArrayTypedClass.new.call(mode: 'manual')).to eq('manual')
+        end
+
+        it 'allows passing a value matching one of the union types' do
+          expect(ArrayTypedClass.new.call(mode: :manual)).to eq(:manual)
+        end
+
+        it 'raises on runtime when passed a value not matching any union type' do
+          expect do
+            ArrayTypedClass.call(mode: 123)
+          end.to raise_error(RuntimeError,
+                             /argument mode passed is a Integer, needs to be a String or Symbol/)
+        end
+
+        it 'raises exception when the declaration is wrong' do
+          expect do
+            bad_array_typed_class
+          end.to raise_error(ArgumentError,
+                             /default for argument mode is a Integer, needs to be String or Symbol/)
+        end
       end
     end
   end
