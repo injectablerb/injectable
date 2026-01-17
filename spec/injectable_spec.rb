@@ -801,8 +801,14 @@ describe Injectable do
         class MyCollection
           include Enumerable
 
-          def each
-            yield 1, 2
+          def initialize(values = [])
+            @values = values
+          end
+
+          # Required method for Enumerable
+          def each(&block)
+            return enum_for(:each) unless block_given?
+            @values.each(&block)
           end
         end
 
@@ -812,7 +818,17 @@ describe Injectable do
           returns MyCollection, of: Integer, nullable: false, allow_nils: false
 
           def call
-            MyCollection.new
+            MyCollection.new([1, 2])
+          end
+        end
+
+        class ReturnsMyWrongCollection
+          include Injectable
+
+          returns MyCollection, of: Integer, nullable: false, allow_nils: false
+
+          def call
+            MyCollection.new([1, 'a'])
           end
         end
       end
@@ -828,11 +844,17 @@ describe Injectable do
       it 'raises when collection contains wrong types' do
         expect do
           ReturnsWrongTypes.call
-        end.to raise_error(RuntimeError, /return collection contains a Integer, needs elements of/)
+        end.to raise_error(RuntimeError, /return collection contains a Integer at position 1, needs elements of ReturnUser/)
       end
 
       it 'accepts any Enumerable (ActiveRecord-like) collection' do
         expect { ReturnsMyCollection.call }.not_to raise_error
+      end
+
+      it 'raises when collection contains wrong types on Enumerable collections' do
+        expect do
+          ReturnsMyWrongCollection.call
+        end.to raise_error(RuntimeError, /return collection contains a String at position 1, needs elements of Integer/)
       end
     end
   end

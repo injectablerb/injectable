@@ -18,7 +18,7 @@ describe Injectable::Validators::CollectionReturns do
     it 'raises when array contains wrong element type' do
       expect do
         described_class.validate!(collection_type, element_type, nullable_collection, allow_nil_elements, [1, 'a'])
-      end.to raise_error(RuntimeError, /return collection contains a String, needs elements of Integer/)
+      end.to raise_error(RuntimeError, /return collection contains a String at position 1, needs elements of Integer/)
     end
 
     it 'raises when nil and not nullable' do
@@ -36,7 +36,7 @@ describe Injectable::Validators::CollectionReturns do
     it 'raises if collection has nil and allow_nils false' do
       expect do
         described_class.validate!(collection_type, element_type, nullable_collection, allow_nil_elements, [1, nil])
-      end.to raise_error(RuntimeError, /collection contains nil but allow_nils is false/)
+      end.to raise_error(RuntimeError, /collection contains nil at position 1 but allow_nils is false/)
     end
 
     it 'accepts nil elements when allow_nils true' do

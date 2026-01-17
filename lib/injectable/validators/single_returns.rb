@@ -5,9 +5,9 @@ module Injectable
       class << self
         def validate!(type, nullable, result)
           if result.nil?
-            raise(non_nullable_error_message(type).to_s) unless nullable
+            raise(non_nullable_error_message(type)) unless nullable
           elsif !result.is_a?(type)
-            raise(bad_type(type, result.class).to_s)
+            raise(bad_type(type, result.class))
           end
         end
 
