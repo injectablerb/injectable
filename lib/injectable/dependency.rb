@@ -16,7 +16,7 @@ module Injectable
 
       kwargs = args.pop
 
-      if kwargs.is_a?(Hash) && kwargs.keys.all? { |key| key.is_a?(Symbol) }
+      if kwargs.is_a?(Hash) && kwargs.keys.all?(Symbol)
         [args, kwargs]
       else
         [args << kwargs, {}]
