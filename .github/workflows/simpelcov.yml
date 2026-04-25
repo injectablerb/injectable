@@ -16,7 +16,6 @@ jobs:
     - name: Set up Ruby
       uses: ruby/setup-ruby@v1.305.0
       with:
-        ruby-version: 4.0.0
         bundler-cache: true # runs 'bundle install' and caches installed gems automatically
     - name: Build and test with Rake
       run: COVERAGE=true bundle exec rake
