@@ -14,9 +14,9 @@ jobs:
       matrix:
         ruby: ['3.3.11', '3.4.9', '4.0.3']
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6.0.2
     - name: Set up Ruby ${{ matrix.ruby }}
-      uses: ruby/setup-ruby@v1
+      uses: ruby/setup-ruby@v1.305.0
       with:
         ruby-version: ${{ matrix.ruby }}
         bundler-cache: true # runs 'bundle install' and caches installed gems automatically

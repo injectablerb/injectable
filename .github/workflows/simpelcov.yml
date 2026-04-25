@@ -12,9 +12,9 @@ jobs:
   code_coverage:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6.0.2
     - name: Set up Ruby
-      uses: ruby/setup-ruby@v1
+      uses: ruby/setup-ruby@v1.305.0
       with:
         ruby-version: 4.0.0
         bundler-cache: true # runs 'bundle install' and caches installed gems automatically
