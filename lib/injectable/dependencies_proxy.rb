@@ -19,7 +19,7 @@ module Injectable
     def memoized_dependencies_of(name)
       return [] if dependencies_of(name).empty?
 
-      dependencies_of(name).each_with_object({}) { |dep, hash| hash[dep] = get(dep) }
+      dependencies_of(name).to_h { |dep| [dep, get(dep)] }
     end
 
     def dependencies_of(name)
