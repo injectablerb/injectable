@@ -1,5 +1,12 @@
 # Unreleased
 
+## 3.0.0 - 2026-04-25
+
+* adds Ruby 4.0.3 to support matrix
+* drops EOL'ed Ruby 3.2
+* upgrades gemspec dependencies
+* maintain and appease the authorities (Rubocop)
+
 ## 2.1.6 - 2026-01-12
 
 * adds Ruby 4 to the support matrix
