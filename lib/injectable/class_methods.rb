@@ -4,7 +4,8 @@ module Injectable
       base.class_eval do
         simple_class_attribute :dependencies,
                                :call_arguments,
-                               :initialize_arguments
+                               :initialize_arguments,
+                               :return_spec
 
         self.dependencies = DependenciesGraph.new(namespace: base)
         self.initialize_arguments = {}
@@ -120,6 +121,8 @@ module Injectable
     # ```
     #
     # Every argument is required unless given an optional default value
+    # Option :type can be provided to enforce runtime type checking when the
+    # service is called. Example: `argument :user, type: User`.
     # @param name Name of the argument
     # @option options :default The default value of the argument
     # @example
@@ -131,10 +134,34 @@ module Injectable
     #   argument :team_id, default: 1
     #     # => def call(team_id: 1)
     #     # =>   @team_id = team_id
-    #     # => end
+    #     # => end)
     def argument(name, options = {})
+      Injectable::Validators::ArgumentDeclaration.validate!(name, options[:type], options[:default])
+
       call_arguments[name] = options
       attr_accessor name
+    end
+
+    # Declare the expected return type for the service's `#call` method.
+    # Example:
+    #   returns User, nullable: false
+    # If a return type is declared, the value returned by `#call` will be
+    # validated at runtime. If the value is nil and `allow_nil` is false an
+    # ArgumentError will be raised. If the value is non-nil and not an
+    # instance of the declared type, an ArgumentError will be raised.
+    # New returns API
+    # Single object:
+    #   returns(User, nullable: true/false)
+    # Collection:
+    #   returns(CollectionClass, of: User, nullable: true/false, allow_nils: true/false)
+    def returns(type, of: nil, nullable: false, allow_nils: false)
+      spec = { nullable: nullable, allow_nils: allow_nils }
+
+      self.return_spec = if of.nil?
+                           spec.merge(initialize_single_return(type))
+                         else
+                           spec.merge(initialize_collection_return(type, of))
+                         end
     end
 
     def initialize_with(name, options = {})
@@ -156,6 +183,24 @@ module Injectable
 
     def find_required_arguments(hash)
       hash.reject { |_arg, options| options.key?(:default) }.keys
+    end
+
+    def initialize_single_return(type)
+      raise(ArgumentError, ':type for returns must be a Class or Module') unless type.is_a?(Module)
+
+      { kind: :single, type: type }
+    end
+
+    def initialize_collection_return(collection_class, element_class)
+      raise(ArgumentError, ':of for returns must be a Class or Module') unless element_class.is_a?(Module)
+      raise(ArgumentError, ':collection for returns must be a Class or Module') unless collection_class.is_a?(Module)
+
+      unless collection_class.method_defined?(:each)
+        raise(ArgumentError,
+              "#{collection_class} is not a collection-like class (must respond to :each) when specifying :of")
+      end
+
+      { kind: :collection, collection_type: collection_class, element_type: element_class }
     end
   end
 end

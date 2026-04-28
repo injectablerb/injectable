@@ -427,6 +427,117 @@ describe Injectable do
         'missing keywords: user_id'
       )
     end
+
+    describe 'argument type checking' do
+      before do
+        class DummyUser; end # rubocop:disable Lint/EmptyClass
+
+        class TypedService
+          include Injectable
+
+          argument :user, type: DummyUser, default: nil
+
+          def call
+            user
+          end
+        end
+
+        class StrictService
+          include Injectable
+
+          argument :values, type: Array
+          def call
+            values.to_s
+          end
+        end
+      end
+
+      let(:bad_service) do
+        class BadDefaultService
+          include Injectable
+
+          argument :report, type: Hash, default: []
+
+          def call
+            report
+          end
+        end
+      end
+
+      it 'allows default nil when type is declared' do
+        expect { TypedService.call }.not_to raise_error
+      end
+
+      it 'sets the value all right' do
+        expect(TypedService.call(user: nil).instance_variable_get('@user')).to be_nil
+      end
+
+      it 'allows explicit nil when default nil provided and type declared' do
+        expect { TypedService.call(user: nil) }.not_to raise_error
+      end
+
+      it 'raises RuntimeError when wrong type is passed' do
+        expect { StrictService.call(values: 123) }.to raise_error(RuntimeError)
+      end
+
+      it 'raises ArgumentError when a declared default does not match the type' do
+        expect do
+          bad_service
+        end.to raise_error(ArgumentError, /default for argument report is a Array, needs to be a Hash/)
+      end
+    end
+
+    describe 'argument type checking over an an array of allowed types' do
+      before do
+        class ArrayTypedClass
+          include Injectable
+
+          argument :mode, type: [String, Symbol], default: :auto
+
+          def call
+            mode
+          end
+        end
+      end
+
+      let(:bad_array_typed_class) do
+        class BadArrayTypedClass
+          include Injectable
+
+          argument :mode, type: [String, Symbol], default: 123
+
+          def call
+            mode
+          end
+        end
+      end
+
+      it 'accepts the declared default that matches one of the union types' do
+        expect(ArrayTypedClass.call).to eq(:auto)
+      end
+
+      it 'allows passing a value matching one value of the union types' do
+        expect(ArrayTypedClass.new.call(mode: 'manual')).to eq('manual')
+      end
+
+      it 'allows passing a value matching one of the union types' do
+        expect(ArrayTypedClass.new.call(mode: :manual)).to eq(:manual)
+      end
+
+      it 'raises on runtime when passed a value not matching any union type' do
+        expect do
+          ArrayTypedClass.call(mode: 123)
+        end.to raise_error(RuntimeError,
+                           /argument mode passed is a Integer, needs to be a String or Symbol/)
+      end
+
+      it 'raises exception when the declaration is wrong' do
+        expect do
+          bad_array_typed_class
+        end.to raise_error(ArgumentError,
+                           /default for argument mode is a Integer, needs to be String or Symbol/)
+      end
+    end
   end
 
   context 'with arguments with default values' do
@@ -586,6 +697,167 @@ describe Injectable do
 
     it 'passes the block to the dependency' do
       expect(subject.call).to eq "can't block this"
+    end
+  end
+
+  describe 'return type checking' do
+    before do
+      class ReturnUser; end # rubocop:disable Lint/EmptyClass
+
+      class ReturnsUserService
+        include Injectable
+
+        returns ReturnUser, nullable: false
+
+        def call
+          ReturnUser.new
+        end
+      end
+
+      class ReturnsNilAllowedService
+        include Injectable
+
+        returns ReturnUser, nullable: true
+
+        def call
+          nil
+        end
+      end
+
+      class ReturnsNilNotAllowedService
+        include Injectable
+
+        returns ReturnUser, nullable: false
+
+        def call
+          nil
+        end
+      end
+
+      class ReturnsWrongTypeService
+        include Injectable
+
+        returns ReturnUser, nullable: false
+
+        def call
+          123
+        end
+      end
+    end
+
+    it 'allows correct return type' do
+      svc = ReturnsUserService.new
+      expect { svc.call }.not_to raise_error
+    end
+
+    it 'allows nil when allow_nil is true' do
+      svc = ReturnsNilAllowedService.new
+      expect { svc.call }.not_to raise_error
+    end
+
+    it 'raises when nil and nullable is false' do
+      svc = ReturnsNilNotAllowedService.new
+      expect { svc.call }.to raise_error(RuntimeError, /return value is nil, expected ReturnUser/)
+    end
+
+    it 'raises when wrong return type' do
+      expect do
+        ReturnsWrongTypeService.call
+      end.to raise_error(RuntimeError, /return value is a Integer, needs to be a ReturnUser/)
+    end
+
+    context 'with collection returns' do
+      before do
+        class ReturnsArrayClass
+          include Injectable
+
+          returns Array, of: ReturnUser, nullable: false, allow_nils: false
+
+          def call
+            [ReturnUser.new, ReturnUser.new]
+          end
+        end
+
+        class ReturnsArrayWithNilsClass
+          include Injectable
+
+          returns Array, of: ReturnUser, nullable: false, allow_nils: true
+
+          def call
+            [ReturnUser.new, nil, ReturnUser.new]
+          end
+        end
+
+        class ReturnsWrongTypes
+          include Injectable
+
+          returns Array, of: ReturnUser, nullable: false, allow_nils: false
+
+          def call
+            [ReturnUser.new, 123]
+          end
+        end
+
+        class MyCollection
+          include Enumerable
+
+          def initialize(values = [])
+            @values = values
+          end
+
+          # Required method for Enumerable
+          def each(&block)
+            return enum_for(:each) unless block_given?
+
+            @values.each(&block) # rubocop:disable RSpec/InstanceVariable
+          end
+        end
+
+        class ReturnsMyCollection
+          include Injectable
+
+          returns MyCollection, of: Integer, nullable: false, allow_nils: false
+
+          def call
+            MyCollection.new([1, 2])
+          end
+        end
+
+        class ReturnsMyWrongCollection
+          include Injectable
+
+          returns MyCollection, of: Integer, nullable: false, allow_nils: false
+
+          def call
+            MyCollection.new([1, 'a'])
+          end
+        end
+      end
+
+      it 'accepts array of declared type' do
+        expect { ReturnsArrayClass.call }.not_to raise_error
+      end
+
+      it 'accepts nil values if specified' do
+        expect { ReturnsArrayWithNilsClass.call }.not_to raise_error
+      end
+
+      it 'raises when collection contains wrong types' do
+        expect do
+          ReturnsWrongTypes.call
+        end.to raise_error(RuntimeError,
+                           /return collection contains a Integer at position 1, needs elements of ReturnUser/)
+      end
+
+      it 'accepts any Enumerable (ActiveRecord-like) collection' do
+        expect { ReturnsMyCollection.call }.not_to raise_error
+      end
+
+      it 'raises when collection contains wrong types on Enumerable collections' do
+        expect do
+          ReturnsMyWrongCollection.call
+        end.to raise_error(RuntimeError, /return collection contains a String at position 1, needs elements of Integer/)
+      end
     end
   end
 end
