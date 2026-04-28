@@ -32,7 +32,7 @@ module Injectable
         def validate_array(name, types, default)
           raise ArgumentError, empty_types_array_message(name) if types.empty?
 
-          array_of_modules = types.all? { |t| t.is_a?(Module) }
+          array_of_modules = types.all?(Module)
           raise ArgumentError, wrong_types_in_array_message(name) unless array_of_modules
           return if default.nil?
 
