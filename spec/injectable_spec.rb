@@ -809,7 +809,7 @@ describe Injectable do
           def each(&block)
             return enum_for(:each) unless block_given?
 
-            @values.each(&block)
+            @values.each(&block) # rubocop:disable RSpec/InstanceVariable
           end
         end
 
