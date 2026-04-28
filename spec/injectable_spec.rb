@@ -808,6 +808,7 @@ describe Injectable do
           # Required method for Enumerable
           def each(&block)
             return enum_for(:each) unless block_given?
+
             @values.each(&block)
           end
         end
@@ -844,7 +845,8 @@ describe Injectable do
       it 'raises when collection contains wrong types' do
         expect do
           ReturnsWrongTypes.call
-        end.to raise_error(RuntimeError, /return collection contains a Integer at position 1, needs elements of ReturnUser/)
+        end.to raise_error(RuntimeError,
+                           /return collection contains a Integer at position 1, needs elements of ReturnUser/)
       end
 
       it 'accepts any Enumerable (ActiveRecord-like) collection' do
