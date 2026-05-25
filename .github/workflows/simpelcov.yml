@@ -2,9 +2,9 @@ name: Simplecov
 
 on:
   push:
-    branches: [ master ]
+    branches: [master]
   pull_request:
-    branches: [ master ]
+    branches: [master]
 
 permissions:
   checks: write
@@ -14,13 +14,13 @@ jobs:
     steps:
     - uses: actions/checkout@v6.0.2
     - name: Set up Ruby
-      uses: ruby/setup-ruby@v1.305.0
+      uses: ruby/setup-ruby@v1.310.0
       with:
         bundler-cache: true # runs 'bundle install' and caches installed gems automatically
     - name: Build and test with Rake
       run: COVERAGE=true bundle exec rake
     - name: SimpleCov+ Action
-      uses: joshmfrankel/simplecov-check-action@1.0.0
+      uses: joshmfrankel/simplecov-check-action@1.1.0
       with:
         minimum_suite_coverage: 90
         minimum_file_coverage: 90

@@ -2,9 +2,9 @@ name: RSpec
 
 on:
   push:
-    branches: [ master ]
+    branches: [master]
   pull_request:
-    branches: [ master ]
+    branches: [master]
 
 jobs:
   build:
@@ -12,13 +12,13 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        ruby: ['3.3.11', '3.4.9', '4.0.3']
+        ruby: ['3.3.11', '3.4.9', '4.0.5']
     steps:
-    - uses: actions/checkout@v6.0.2
-    - name: Set up Ruby ${{ matrix.ruby }}
-      uses: ruby/setup-ruby@v1.305.0
-      with:
-        ruby-version: ${{ matrix.ruby }}
-        bundler-cache: true # runs 'bundle install' and caches installed gems automatically
-    - name: Build and test with Rake
-      run: bundle exec rake
+      - uses: actions/checkout@v6.0.2
+      - name: Set up Ruby ${{ matrix.ruby }}
+        uses: ruby/setup-ruby@v1.310.0
+        with:
+          ruby-version: ${{ matrix.ruby }}
+          bundler-cache: true # runs 'bundle install' and caches installed gems automatically
+      - name: Build and test with Rake
+        run: bundle exec rake
