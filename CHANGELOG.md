@@ -1,5 +1,11 @@
 # Unreleased
 
+## 3.0.1 - 2026-05-25
+
+* Upgrades to Ruby 4.0.5 and bundler 4.0.12
+* Upgrades github actions used
+* Upgrades dependencies
+
 ## 3.0.0 - 2026-04-25
 
 * adds Ruby 4.0.3 to support matrix

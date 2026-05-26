@@ -2,9 +2,9 @@ name: rubocop
 
 on:
   push:
-    branches: [ master ]
+    branches: [master]
   pull_request:
-    branches: [ master ]
+    branches: [master]
 
 permissions:
   contents: read
@@ -15,10 +15,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6.0.2
-      - uses: ruby/setup-ruby@v1.305.0
+      - uses: ruby/setup-ruby@v1.310.0
         with:
           bundler-cache: true
-      - uses: reviewdog/action-rubocop@v2
+      - uses: reviewdog/action-rubocop@v2.22
         with:
           reporter: github-pr-review # Default is github-pr-check
           skip_install: true
