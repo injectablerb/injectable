@@ -1,5 +1,13 @@
 # Unreleased
 
+## 3.0.2 - 2026-10-08
+
+* Upgrades to Ruby 4.0.7 and bundler 4.0.2
+* Upgrades several dependencies ([simplecov](https://github.com/simplecov-ruby/simplecov) as notable upgrade!)
+* Upgrades indirect dependencies
+* Upgrades github actions
+* Resolves [low security advisory on json gem](https://github.com/injectablerb/injectable/security/dependabot/1)
+
 ## 3.0.1 - 2026-05-25
 
 * Upgrades to Ruby 4.0.5 and bundler 4.0.12
