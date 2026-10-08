@@ -14,8 +14,8 @@ jobs:
     name: runner / rubocop
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6.0.2
-      - uses: ruby/setup-ruby@v1.310.0
+      - uses: actions/checkout@v7.0.1
+      - uses: ruby/setup-ruby@v1.327.0
         with:
           bundler-cache: true
       - uses: reviewdog/action-rubocop@v2.22
