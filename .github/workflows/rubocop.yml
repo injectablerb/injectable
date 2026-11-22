@@ -15,10 +15,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7.0.1
-      - uses: ruby/setup-ruby@v1.327.0
+      - uses: ruby/setup-ruby@v1.343.0
         with:
           bundler-cache: true
-      - uses: reviewdog/action-rubocop@v2.22
+      - uses: reviewdog/action-rubocop@v2.23
         with:
           reporter: github-pr-review # Default is github-pr-check
           skip_install: true
