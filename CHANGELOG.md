@@ -1,5 +1,12 @@
 # Unreleased
 
+## 3.0.3 - 2026-11-22
+
+* Upgrades Ruby to 4.0.10 and bundler to 4.1
+* Upgrades rubocop and rspec indirect dependencies
+* Upgrades other indirect dependencies
+* Upgrades github actions and ruby compat matrix
+
 ## 3.0.2 - 2026-10-08
 
 * Upgrades to Ruby 4.0.7 and bundler 4.0.2
